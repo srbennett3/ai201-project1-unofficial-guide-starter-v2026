@@ -23,8 +23,12 @@ For at least 4 of my 5 test questions, the retrieved chunks include one that
 contains the answer.
 
 **Why this target:**
-<!-- e.g. "One of my questions is about a topic only two documents mention, so
-     I expect that one to be hard." -->
+I picked 4 of 5 because one of my questions sits in a thread that does not
+agree with itself. Large employers close in October. Smaller places hire
+in February. If search brings back the wrong reply, that question misses
+even when it found the right thread. 5 of 5 would pretend these threads
+are cleaner than they are. Another thing: 3 of 5 would let a second miss
+slide, and I do not want that.
 
 ---
 
@@ -33,8 +37,11 @@ contains the answer.
 Every answer the system produces names at least one source document.
 
 **Why this target:**
-<!-- Why all five and not four? What about your setup makes that achievable —
-     or what would have to go wrong for it not to be? -->
+I went with all 5 because the prompt already tells the model to name the
+file. This unofficial guide is only useful if you can open that thread.
+4 of 5 would treat a missing citation as fine. The thing that has to go
+wrong is the model ignoring the instruction. That is a real miss. It is
+not something I am planning around.
 
 ---
 
@@ -50,48 +57,39 @@ in at least 4 of 5 tries.
      just keep five of them, or the "4 of 5" above has nothing to be 4 of. -->
 
 **Why this target:**
-<!-- What did your distances look like when you set the cutoff in Milestone 4?
-     Was there a clean gap, or did the two groups overlap? -->
+The five out-of-scope questions are from a different world than these
+advice threads. Capitals, engine oil, the World Cup. I think there should
+be a clean gap. However, 5 of 5 would assume the embedder never
+accidentally pulls a campus thread close to an unrelated question. 4 of 5
+leaves room for one weird near miss without treating the gate as optional.
 
 ---
 
 ## 4. Something about your chunks
 
-<!-- YOU WRITE THIS ONE.
-
-     How would you know if your chunks were the right size? Name something
-     countable or observable.
-
-     Examples of the right shape — don't copy these, they should come from
-     what you actually saw in Milestone 3:
-       - "At least 4 of 5 sampled chunks read as a complete thought, with no
-          sentence cut in half at either end."
-       - "No chunk is shorter than 200 characters, since anything below that
-          in my corpus turned out to be a heading with no content under it." -->
-
-
+At least 4 of 5 chunks printed by `python app.py chunks -n 5` contain a
+complete sentence that is not cut at either end. None of those five is
+shorter than 40 characters.
 
 **Why this target:**
-
-
+These threads are 2 to 4 short replies. They run about 500 characters on
+average. An 800-character window will either swallow a whole thread or
+leave a tiny leftover at the end. A 2-character tail is not a thought. A
+sentence cut in half cannot answer a question on its own. I said 4 of 5
+because one sample might be a thread title plus the start of reply 1.
 
 ---
 
 ## 5. Your choice
 
-<!-- YOU WRITE THIS ONE TOO.
-
-     Pick something you actually care about getting right. It could be about
-     speed, about refusals, about a particular kind of question your corpus
-     handles badly, about source attribution being correct rather than merely
-     present — anything, as long as it names a number or an observable
-     outcome. -->
-
-
+For all 5 test questions, if the system answers (does not refuse), the
+document it names is the thread that actually contains the expected fact.
 
 **Why this target:**
-
-
+Criterion 2 only checks that a source is named. Fenwick, the library, and
+December show up in more than one thread. A confident answer can cite the
+wrong file and still look cited. I think a wrong thread is worse than no
+citation. That is the failure this corpus invites.
 
 ---
 
