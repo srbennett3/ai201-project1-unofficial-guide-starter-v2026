@@ -22,20 +22,14 @@ Steven Bennett — corpus: `advice_threads`
 
 ## What This Does
 
-<!-- Three or four sentences. Which corpus you picked, and the kinds of
-     questions your system answers. Write it for someone who has never seen
-     this repo.
-
-     Milestone 5. -->
+This unofficial guide answers questions from a corpus of 23 campus advice threads. Each thread is a question with three to five student replies. The system can tell you things the threads actually contain, such as when large employers close internship applications, how far the printing quota goes, and which mornings laundry is free. It also names the thread it used.
 
 ## Chunking Strategy
 
 **Chunk size:** one reply, about 105 to 254 characters (175 on average)
 **Overlap:** 0
 
-These threads are short reviews, not long guides. Useful information is packed into one sentence inside one reply. The starter's chunker uses fixed 800-character windows. On this corpus that left a 2-character chunk, the tail of thread_meal_plan_tier.txt. I saw it with python app.py chunks --from-doc thread_meal_plan_tier.txt. That fragment is too small. The rest of the same file in one window is too big. It covers four topics at once.
-
-I wrote down "one reply, overlap 0" before changing the function. I split on the --- reply N --- markers already in the files and put the THREAD title on each reply so the chunk stands on its own. I did not shrink the character window. A smaller window would still cut a sentence.
+These threads are short reviews, so information is packed into one sentence replies. I split on the --- reply N --- markers already in the files and put the THREAD title on each reply so the chunk has a reference. I did not shrink the character window, because a smaller window would still cut a sentence.
 
 
 ## Sample Chunks
@@ -91,30 +85,41 @@ The library being open until 2am is a trap. It's a resource, not a schedule.
 
 ## Sample Answer
 
-<!-- One complete question and answer, pasted as text, with the source line
-     visible. Milestone 4. -->
+On which mornings is laundry free in every dorm building?"
+  (best distance 0.164, cutoff 0.65)
+
+Laundry is free in every building on Tuesday and Wednesday mornings (Source: thread_laundry_timing.txt).
+
+Sources retrieved: thread_commuting.txt, thread_laundry_timing.txt, thread_roommate_conflict.txt
+
 
 **Question:**
+
+On which mornings is laundry free in every dorm building?"
 
 **Answer:**
 
 ```
+Laundry is free in every building on Tuesday and Wednesday mornings (Source: thread_laundry_timing.txt).
 ```
 
 **My relevance cutoff:**
+THRESHOLD = 0.65
 
-<!-- The number you set in config.py, and how you got there.
-
-     You ran five questions your corpus covers and the five in OUT_OF_SCOPE
-     that it clearly doesn't, and wrote down the best distance for each. What
-     did those two groups look like? Where was the gap? Put the actual numbers
-     here — the table below wants all ten rows.
-
-     Milestone 4. -->
+Two groups of best distances after the reply-boundary index. Questions my documents cover: 0.164, 0.200, 0.272, 0.388, 0.460. Questions from a different world entirely (OUT_OF_SCOPE): 0.819, 0.861, 0.898, 0.899, 0.905. The gap is between 0.460 and 0.819. I put the cutoff at 0.65.
 
 | Question | In corpus? | Best distance |
 |---|---|---|
-|  |  |  |
+| When do large employers close applications for the following summer? | yes | 0.272 |
+| How many black-and-white pages does the $30 printing quota cover? | yes | 0.200 |
+| On which mornings is laundry free in every dorm building? | yes | 0.164 |
+| How many minutes is the walk from the east parking lot? | yes | 0.388 |
+| What do students say happens if you ask for an extension on Wednesday for a Friday deadline? | yes | 0.460 |
+| What is the capital of Mongolia? | no | 0.899 |
+| How do I change the oil in a diesel engine? | no | 0.905 |
+| Who won the 1994 World Cup? | no | 0.898 |
+| What is the recommended dosage of ibuprofen for a headache? | no | 0.819 |
+| How do I write a for loop in Rust? | no | 0.861 |
 
 ## How I Used AI
 
@@ -127,9 +132,10 @@ The library being open until 2am is a trap. It's a resource, not a schedule.
 
      Milestone 5. -->
 
-**1.**
+**1.** I asked Cursor to help write a chunking function that was compatible with the corpus. What came back first was a smaller character window, but that wasn't what I was looking for, so I requested it split on the `--- reply N ---` markers instead, with overlap 0, and I put the THREAD title on each reply for reference.
 
-**2.**
+**2.** I asked what relevance cutoff to use. The first suggestion was to keep 0.6 which I thought was reasonable. However, I wanted to be sure so I ran all five test questions and all five OUT_OF_SCOPE questions. After looking at the best distances for each I decided to bump it up slightly to 0.65.
+
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
