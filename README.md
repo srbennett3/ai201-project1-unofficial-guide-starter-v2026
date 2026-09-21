@@ -30,18 +30,13 @@ Steven Bennett — corpus: `advice_threads`
 
 ## Chunking Strategy
 
-**Chunk size:**
-**Overlap:**
+**Chunk size:** one reply, about 105 to 254 characters (175 on average)
+**Overlap:** 0
 
-<!-- What about YOUR documents made you pick these numbers? Short posts and
-     long sectioned guides don't want the same chunking, and "800 seemed
-     reasonable" earns nothing. Point at something you noticed when you read
-     the documents in Milestone 1.
+These threads are short reviews, not long guides. Useful information is packed into one sentence inside one reply. The starter's chunker uses fixed 800-character windows. On this corpus that left a 2-character chunk, the tail of thread_meal_plan_tier.txt. I saw it with python app.py chunks --from-doc thread_meal_plan_tier.txt. That fragment is too small. The rest of the same file in one window is too big. It covers four topics at once.
 
-     If you changed your mind partway through, say so and say why. That's worth
-     more than pretending you got it right first time.
+I wrote down "one reply, overlap 0" before changing the function. I split on the --- reply N --- markers already in the files and put the THREAD title on each reply so the chunk stands on its own. I did not shrink the character window. A smaller window would still cut a sentence.
 
-     Milestone 3. -->
 
 ## Sample Chunks
 
@@ -54,29 +49,44 @@ Steven Bennett — corpus: `advice_threads`
 
      Milestone 3. -->
 
-**Chunk 1** — source: `` — produced by: ``
+**Chunk 1** — source: thread_bike_commute.txt#0 `` — produced by: chunker.py::split_documents``
 
 ```
+THREAD: Is a bike worth it for a 20 minute walk commute?
+
+Yeah. Cuts an 18 minute walk to about 6. The thing nobody mentions is storage — covered bike parking exists at three buildings and is full by 9am at all three.
 ```
 
-**Chunk 2** — source: `` — produced by: ``
+**Chunk 2** — source: source: thread_first_year_regret.txt#1 `` — produced by: chunker.py::split_documents``
 
 ```
+THREAD: Which meal plan tier is right?
+
+Depends entirely on whether your building has a kitchen. Fenwick has kitchenettes, so people there go down a tier and cook two or three nights. Everywhere else, get the middle tier.
 ```
 
-**Chunk 3** — source: `` — produced by: ``
+**Chunk 3** — source: thread_pass_fail.txt#3 `` — produced by: chunker.py::split_documents``
 
 ```
+THREAD: When should you actually use the pass/fail option?
+
+Two per year and eight across the degree. I hit the annual limit in second year and regretted spending one on an easy course.
 ```
 
-**Chunk 4** — source: `` — produced by: ``
+**Chunk 4** — source: thread_professor_email.txt#1 `` — produced by: chunker.py::split_documents``
 
 ```
+THREAD: Do professors actually answer email?
+
+Office hours are dramatically more effective than email for anything that takes more than two sentences to answer. They're also usually empty.
 ```
 
-**Chunk 5** — source: `` — produced by: ``
+**Chunk 5** — source: thread_sleep_schedule.txt#1 `` — produced by: chunker.py::split_documents``
 
 ```
+THREAD: Everyone says fix your sleep. Does it actually matter?
+
+The library being open until 2am is a trap. It's a resource, not a schedule.
 ```
 
 ## Sample Answer
